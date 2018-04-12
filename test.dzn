@@ -1,0 +1,6 @@
+/* test data file 
+*/
+total_storage = 10000;
+VM_VOLS = { vm1, vm2, vm3, vm4, vm5, vm6, vm7, vm8, vm9, vm10 };
+vm_vol_size = [ 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 ];
+vm_vol_iops = [ 200, 200, 200, 200, 200, 200, 200, 200, 200, 200 ];

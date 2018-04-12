@@ -1,0 +1,42 @@
+% Simple test case
+VM_GUESTS = 20;
+VM_AFFINITY = 1;
+VM_ANTI_AFFINITY = 1;
+VM_CLUSTER = 1;
+VM_ANTI_CLUSTER = 1;
+
+VMS = { NULL,vm1,vm2,vm3,vm4,vm5,vm6,vm7,vm8,vm9,vm10,vm11,vm12,vm13,vm14,vm15,vm16,vm17,vm18,vm19,vm20};
+
+%array [ 0 .. VM_GUESTS ] of int vm_guests;
+%  vm_guest=[guestname,vram,vrampct,vcpu,vcpupct]
+vm_guests = [|
+   vm1,64,100,16,25,
+  |vm2,64,100,16,25,
+  |vm3,64,100,16,25,
+  |vm4,64,100,16,25,
+  |vm5,64,100,16,25,
+  |vm6,64,100,16,25,
+  |vm7,64,100,16,25,
+  |vm8,64,100,16,25,
+  |vm9,64,100,16,25,
+  |vm10,64,100,16,25,
+  |vm11,64,100,16,25,
+  |vm12,64,100,16,25,
+  |vm13,64,100,16,25,
+  |vm14,64,100,16,25,
+  |vm15,64,100,16,25,
+  |vm16,64,100,16,25,
+  |vm17,64,100,16,25,
+  |vm18,64,100,16,25,
+  |vm19,64,100,16,25,
+  |vm20,64,100,16,25
+  |];
+
+%array [ 1 .. VM_AFFINITY ] of int vm_affinity; 
+vm_affinity = [|NULL,NULL|];
+%array [ 1 .. VM_ANTI_AFFINITY ] of int vm_anti_affinity; % generlaly used for AD, Exchange, etc..
+vm_anti_affinity = [|NULL,NULL|];
+%array [ 1 .. VM_CLUSTER ] of int vm_cluster; % generally this is going to be used for SAP or SAP HANA clusters
+vm_cluster = [|NULL,NULL|];
+%array [ 1 .. VM_ANTI_CLUSTER ] of int vm_anti_cluster;  % generall this is also going to be used for SAP or SAP HANA clusters
+vm_anti_cluster = [|NULL,NULL|];
