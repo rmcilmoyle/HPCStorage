@@ -1,5 +1,3 @@
-% testing Git...
-
 /*  ------------------------------------------------------------------
 **  HPC Storage Analysis
 **  Author: Roger McIlmoyle
@@ -32,21 +30,20 @@ array [sDATASTORES] of int: iDatastore_iops; % capacity of each datastore, the c
 array [sDATASTORES] of int: iDatastore_cost; % cost for each datastore
 
 
-array [sVOLS] of var int: iVol_ds_size;
-array [sVOLS] of var int: iVol_ds_iops;
+array [sVOLS] of var sDATASTORES: iVol_ds_size; %indirectly forces a volume to exist in a datastore
+array [sVOLS] of var sDATASTORES: iVol_ds_iops; %indirectly forces a volume to exist in a datastore
 array [sDATASTORES] of var vDATASTORES: iDS_used;
 
-include "bin_packing_capa.mzn";
+include "globals.mzn";
 constraint bin_packing_capa(iDatastore_size,iVol_ds_size,iVol_size);
 constraint bin_packing_capa(iDatastore_iops,iVol_ds_iops,iVol_iops);
+constraint forall( v in sVOLS )( iVol_ds_size[v] = iVol_ds_iops[v] );
 
-constraint forall( v in sVOLS ) ( iVol_ds_size[v] = iVol_ds_iops[v] ); % ensure Datastore assignement is the same for IOPS and capacity
-%constraint forall( v in sVOLS where iVol_ds_iops[v]>0) ( sum( v1 in sVOLS where iVol_ds_iops[v] = iVol_ds_iops[v1]) ( iVol_iops[v1] ) <=  iDatastore_iops[iVol_ds_iops[v]] - iVol_peakiops[v] + iVol_iops[v]  ); % ensure there is headroom for virtual machine to peak IOPS
-constraint forall( v in sVOLS) ( iDS_used[iVol_ds_size[v]] = 1 ); % ensure every volume is assigned a datastore
+constraint forall( d in sDATASTORES) ( iDS_used[d] = sum( v in sVOLS)( iVol_ds_size[v] = d));
 
-%var int: cost_price = sum( d in sDATASTORES where iDS_used[d]>0 )(iDatastore_cost[d]);
+var int: cost = sum( d in sDATASTORES where iDS_used[d]>0)( iDatastore_cost[d] );
 
-%solve::seq_search( [  int_search(iDatastore_size,smallest,indomain_min,complete),int_search(iDatastore_iops,smallest,indomain_min,complete) ]) satisfy;
-solve satisfy;                      
+solve minimize cost;  
 
-%output ["Price  := \(fix(cost_price))\n"];
+output ["cost:\(cost)"];                    
+
